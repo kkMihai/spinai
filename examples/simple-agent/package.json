@@ -1,0 +1,27 @@
+{
+  "name": "my-agent",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "next lint --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "openai": "^4.77.0",
+    "@repo/spinup": "*",
+    "tsx": "^4.7.1"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@types/node": "^20",
+    "@types/react": "18.3.1",
+    "@types/react-dom": "18.3.0",
+    "typescript": "5.5.4"
+  }
+}

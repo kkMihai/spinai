@@ -5,7 +5,9 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "incremental": true,
+    "isolatedModules": true
   },
   "include": [
     "**/*.ts",
