@@ -1,0 +1,64 @@
+---
+title: Token Counter Utility
+description: Learn how to calculate token costs for various language models, including new functionalities for Cloudflare and custom HTTP LLM integrations.
+---
+
+## Updated Token Cost Calculation
+
+The token counter utility has been updated to include token cost calculations for Cloudflare AI models and custom HTTP LLM integrations. This enhancement allows developers to accurately estimate the cost of using different models based on the number of input and output tokens generated during interactions.
+
+### Cloudflare LLM
+
+Cloudflare offers a range of AI models, each with different token cost implications. The token counter utility now supports the following Cloudflare models:
+
+- `@cf/meta/llama-2-7b-chat-int8`
+- `@cf/meta/llama-2-13b-chat-int8`
+- `@cf/meta/llama-2-70b-chat-int8`
+- `@cf/mistral/mistral-7b-instruct-v0.1`
+- `@cf/tiiuae/falcon-7b-instruct`
+- `@cf/anthropic/claude-instant-1.2`
+- `@cf/anthropic/claude-2.1`
+
+Each model has specific input and output token costs associated with it, as defined in the updated utility.
+
+### Custom HTTP LLM
+
+For custom HTTP LLM integrations, a generic token cost calculation has been introduced:
+
+- `custom-http-model`
+
+This allows for a flexible approach to estimating token costs for any custom models integrated via HTTP, with a default token cost of 0.5 for inputs and 1.5 for outputs.
+
+## Examples
+
+### Token cost calculation for Cloudflare LLM
+
+To calculate the token cost for a Cloudflare model, such as `@cf/meta/llama-2-7b-chat-int8`, you can use the token counter utility as follows:
+
+```typescript
+import { calculateTokenCost } from 'path/to/tokenCounter';
+
+const modelId = '@cf/meta/llama-2-7b-chat-int8';
+const inputTokens = 100; // Number of input tokens
+const outputTokens = 150; // Number of output tokens
+
+const cost = calculateTokenCost(modelId, inputTokens, outputTokens);
+console.log(cost); // Outputs the total cost based on the model's token rates
+```
+
+### Token cost calculation for custom HTTP LLM
+
+For custom HTTP LLM integrations, the process is similar. Assuming you have a model identified as `custom-http-model`:
+
+```typescript
+import { calculateTokenCost } from 'path/to/tokenCounter';
+
+const modelId = 'custom-http-model';
+const inputTokens = 200; // Number of input tokens
+const outputTokens = 300; // Number of output tokens
+
+const cost = calculateTokenCost(modelId, inputTokens, outputTokens);
+console.log(cost); // Outputs the total cost using the custom HTTP model's token rates
+```
+
+These examples demonstrate how to use the updated token counter utility to estimate costs for using specific language models, facilitating better resource management and planning for developers integrating LLMs into their applications.
