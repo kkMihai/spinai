@@ -1,0 +1,76 @@
+---
+title: "Custom HTTP LLM Integration"
+description: "Learn how to integrate custom HTTP-based LLMs with SpinAI for flexible and scalable AI solutions."
+---
+
+## Introduction
+
+The Custom HTTP LLM Integration allows developers to connect SpinAI with any language model that can be accessed over HTTP. This flexibility enables the use of specialized models tailored to specific needs or the integration of proprietary models hosted internally. This document outlines how to configure and use this integration within your SpinAI projects.
+
+## Configuration
+
+To use a custom HTTP LLM, you must first configure it with the necessary details to make requests to your model's endpoint. The configuration includes the endpoint URL, optional API key for authentication, custom headers, and functions to transform the request and response data.
+
+```typescript
+interface HttpLLMConfig {
+  endpoint: string;
+  apiKey?: string;
+  headers?: Record<string, string>;
+  transformRequest?: (body: unknown) => unknown;
+  transformResponse?: (response: unknown) => string;
+}
+```
+
+- `endpoint`: The URL of the HTTP endpoint where the LLM is accessible.
+- `apiKey`: An optional API key for authenticating requests to the endpoint.
+- `headers`: Optional additional headers to include in the request.
+- `transformRequest`: An optional function to transform the request body before sending it.
+- `transformResponse`: An optional function to transform the response body into a string.
+
+## Creating Custom HTTP LLM Instances
+
+To create an instance of a custom HTTP LLM, use the `createHttpLLM` function with your configuration. This function returns an LLM instance that can be used with SpinAI's agent creation utilities.
+
+```typescript
+import { createHttpLLM } from "spinai";
+
+const customHttpLLM = createHttpLLM({
+  endpoint: "https://your.custom.model/endpoint",
+  apiKey: "your_api_key", // Optional
+  headers: {
+    "Custom-Header": "Value" // Optional
+  },
+  transformRequest: (body) => {
+    // Optional transformation of the request body
+    return body;
+  },
+  transformResponse: (response) => {
+    // Optional transformation of the response body
+    return response.toString();
+  }
+});
+```
+
+## Examples
+
+### Basic Custom HTTP LLM Setup
+
+The following example demonstrates how to set up a basic custom HTTP LLM integration. This setup includes specifying the endpoint and an optional API key for authentication.
+
+```typescript
+import { createAgent } from "spinai";
+import { createHttpLLM } from "spinai/src/llms/http";
+
+const llm = createHttpLLM({
+  endpoint: "https://your.custom.model/endpoint",
+  apiKey: "your_secure_api_key"
+});
+
+const agent = createAgent({
+  instructions: "Provide detailed summaries of technical documents",
+  actions: [], // Define actions as needed
+  llm,
+});
+```
+
+This documentation provides a foundational understanding of integrating custom HTTP LLMs with SpinAI. For advanced configurations, such as implementing custom request/response transformations, refer to the `transformRequest` and `transformResponse` configuration options.
