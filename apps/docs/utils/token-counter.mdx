@@ -1,0 +1,58 @@
+---
+title: Token Cost Calculation Updates
+description: Detailed updates on token cost calculations for Cloudflare and custom HTTP integrations in the tokenCounter utility.
+---
+
+## Updated Token Cost Calculations for Cloudflare
+
+The `tokenCounter` utility has been enhanced to support new token cost calculations for various Cloudflare AI models. This update ensures that developers can accurately estimate the cost of using Cloudflare models within their applications. The newly supported models and their respective token costs for input and output are as follows:
+
+- `@cf/meta/llama-2-7b-chat-int8`: 0.2 tokens per input, 0.4 tokens per output
+- `@cf/meta/llama-2-13b-chat-int8`: 0.4 tokens per input, 0.8 tokens per output
+- `@cf/meta/llama-2-70b-chat-int8`: 1.0 token per input, 2.0 tokens per output
+- `@cf/mistral/mistral-7b-instruct-v0.1`: 0.2 tokens per input, 0.4 tokens per output
+- `@cf/tiiuae/falcon-7b-instruct`: 0.2 tokens per input, 0.4 tokens per output
+- `@cf/anthropic/claude-instant-1.2`: 0.8 tokens per input, 2.4 tokens per output
+- `@cf/anthropic/claude-2.1`: 8.0 tokens per input, 24.0 tokens per output
+
+These updates are crucial for developers leveraging Cloudflare's AI capabilities, ensuring accurate billing and resource allocation.
+
+## Example token cost calculation for Cloudflare
+
+To calculate the token cost for a Cloudflare model, you can use the `tokenCounter` utility as follows:
+
+```typescript
+import { tokenCounter } from 'path/to/tokenCounter';
+
+const modelId = '@cf/meta/llama-2-7b-chat-int8';
+const inputLength = 100; // Number of tokens in the input
+const outputLength = 50; // Number of tokens in the output
+
+const cost = tokenCounter(modelId, inputLength, outputLength);
+console.log(cost); // Outputs the total cost based on the model's token rates
+```
+
+## Updated Token Cost Calculations for Custom HTTP
+
+The `tokenCounter` utility now also supports token cost calculations for custom HTTP integrations. This is particularly useful for developers integrating bespoke AI models or third-party services not directly supported by the utility's predefined models. The token costs for custom HTTP models are defined as follows:
+
+- `custom-http-model`: 0.5 tokens per input, 1.5 tokens per output
+
+This addition provides flexibility and extends the utility's applicability to a wider range of use cases, allowing for accurate cost estimations across diverse integrations.
+
+## Example token cost calculation for Custom HTTP
+
+For custom HTTP models, you can calculate the token cost similarly to the Cloudflare models:
+
+```typescript
+import { tokenCounter } from 'path/to/tokenCounter';
+
+const modelId = 'custom-http-model';
+const inputLength = 200; // Number of tokens in the input
+const outputLength = 100; // Number of tokens in the output
+
+const cost = tokenCounter(modelId, inputLength, outputLength);
+console.log(cost); // Outputs the total cost for the custom HTTP model
+```
+
+These updates ensure developers have the tools necessary to accurately manage and forecast the costs associated with using AI models, whether through Cloudflare or custom HTTP integrations.
