@@ -1,14 +1,16 @@
 ---
-title: "LLM Support"
-description: "Language models supported by SpinAI"
+title: "LLM Integrations Overview"
+description: "Overview of language models supported by SpinAI, including new integrations."
 ---
 
-SpinAI supports multiple LLMs for agent decision making:
+SpinAI now supports a wider range of LLMs for agent decision making, providing more flexibility and options for integration:
 
 - [OpenAI](/llms/openai)
 - [Anthropic](/llms/anthropic)
+- [Cloudflare](/llms/cloudflare) {/* New */}
+- [Custom HTTP](/llms/custom-http) {/* New */}
 
-Each LLM can be configured with custom settings like:
+Each LLM can be configured with custom settings to best suit your needs, including:
 
 - Model selection
 - Temperature
@@ -17,20 +19,42 @@ Each LLM can be configured with custom settings like:
 
 ## Choosing an LLM
 
-Consider these factors when choosing an LLM:
+When selecting an LLM for your application, consider the following factors:
 
 - Cost per token
 - Response quality
 - API reliability
 - Token context limits
 
+These factors can help you determine which LLM offers the best value and performance for your specific use case.
+
+## New Integrations
+
+### Cloudflare
+
+The Cloudflare integration allows you to leverage Cloudflare's distributed network for faster and more reliable LLM requests. This is particularly beneficial for applications requiring high availability and low latency.
+
+### Custom HTTP
+
+For ultimate flexibility, the Custom HTTP integration enables you to connect any LLM that offers an HTTP API. This option is ideal for businesses with unique requirements or those looking to integrate proprietary language models.
+
 ## Next Steps
 
 <CardGroup>
   <Card title="OpenAI Setup" icon="openai" href="/llms/openai">
-    Use OpenAI models
+    Use OpenAI models for robust and versatile NLP tasks.
   </Card>
   <Card title="Anthropic Setup" icon="brain" href="/llms/anthropic">
-    Use Claude models
+    Explore Claude models for ethical AI interactions.
+  </Card>
+  <Card title="Cloudflare Setup" icon="cloud" href="/llms/cloudflare">
+    {/* New */}
+    Implement Cloudflare for enhanced performance and reliability.
+  </Card>
+  <Card title="Custom HTTP Setup" icon="settings" href="/llms/custom-http">
+    {/* New */}
+    Configure any LLM with an HTTP API for custom integrations.
   </Card>
 </CardGroup>
+
+These updates ensure that SpinAI users have access to a broad spectrum of LLMs, allowing for more tailored and efficient AI solutions.
