@@ -1,0 +1,89 @@
+---
+title: "Custom HTTP LLM Integration"
+description: "Integrate custom HTTP-based language models with SpinAI for advanced natural language processing capabilities."
+---
+
+## Introduction
+
+The Custom HTTP LLM Integration allows you to connect any HTTP-based language model to SpinAI, enabling you to leverage your own models or third-party models that aren't natively supported. This integration is flexible, supporting custom request and response transformations, making it suitable for a wide range of applications.
+
+## Configuration
+
+To use the Custom HTTP LLM Integration, you need to configure it with the endpoint of your HTTP-based language model, and optionally, an API key, custom headers, and functions to transform the request and response.
+
+```typescript
+interface HttpLLMConfig {
+  endpoint: string;
+  apiKey?: string;
+  headers?: Record<string, string>;
+  transformRequest?: (body: unknown) => unknown;
+  transformResponse?: (response: unknown) => string;
+}
+```
+
+### Custom HTTP setup example
+
+Below is an example of how to set up and configure a custom HTTP LLM.
+
+```typescript
+import { createHttpLLM } from "spinai";
+
+const llm = createHttpLLM({
+  endpoint: "https://your.custom.model/endpoint",
+  apiKey: "your_api_key_here", // Optional
+  headers: { // Optional
+    "Custom-Header": "Value"
+  },
+  transformRequest: (body) => {
+    // Modify the request body as needed
+    return body;
+  },
+  transformResponse: (response) => {
+    // Extract and transform the response as needed
+    return response.text;
+  },
+});
+```
+
+## Completion Functions
+
+The completion function is used to send prompts to your custom HTTP LLM and receive responses. It supports various options, such as specifying the prompt, schema for JSON responses, temperature, and maximum tokens.
+
+```typescript
+async complete<T>({
+  prompt,
+  schema,
+  temperature,
+  maxTokens,
+}: CompletionOptions): Promise<CompletionResult<T>>;
+```
+
+### Using completion functions
+
+Here's how you can use the completion function with your custom HTTP LLM.
+
+```typescript
+const completionOptions = {
+  prompt: "Your prompt here",
+  temperature: 0.7, // Optional
+  maxTokens: 1024, // Optional
+};
+
+llm.complete(completionOptions).then((result) => {
+  console.log(result.content); // The response from your LLM
+});
+```
+
+## Token Cost Calculations
+
+The integration includes an estimation of token usage based on the input and output character counts. This is useful for tracking and managing usage, especially when the custom LLM does not provide token counts.
+
+The cost is calculated based on the estimated number of input and output tokens, using a simple heuristic of 4 characters per token. This estimation allows you to monitor and potentially limit usage based on token costs.
+
+```typescript
+const estimatedInputTokens = Math.ceil(inputChars / 4);
+const estimatedOutputTokens = Math.ceil(outputChars / 4);
+const costCents = calculateCost(estimatedInputTokens, estimatedOutputTokens, model);
+```
+
+This integration provides a flexible and powerful way to incorporate any HTTP-based language model into your SpinAI workflows, enabling custom natural language processing capabilities tailored to your specific needs.
