@@ -61,7 +61,13 @@
     },
     {
       "group": "Agent LLMs",
-      "pages": ["llms/overview", "llms/openai", "llms/anthropic"]
+      "pages": [
+        "llms/overview",
+        "llms/openai",
+        "llms/anthropic",
+        "llms/cloudflare",
+        "llms/http"
+      ]
     },
     {
       "group": "Examples",
