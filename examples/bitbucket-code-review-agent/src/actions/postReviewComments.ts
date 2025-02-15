@@ -98,7 +98,9 @@ export const postReviewComments = createAction({
                 body: await commentResponse.text(),
               });
             } else {
-              const responseData = await commentResponse.json();
+              const responseData = (await commentResponse.json()) as {
+                id: string;
+              };
               console.log("Comment posted successfully:", {
                 file: review.file,
                 line: feedback.line,

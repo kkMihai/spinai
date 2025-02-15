@@ -98,7 +98,20 @@ export const reviewCode = createAction({
         throw new Error(`Failed to fetch PR: ${prResponse.statusText}`);
       }
 
-      const prDetails = await prResponse.json();
+      interface PRDetails {
+        source?: {
+          branch?: {
+            name?: string;
+          };
+        };
+        destination?: {
+          branch?: {
+            name?: string;
+          };
+        };
+      }
+
+      const prDetails = (await prResponse.json()) as PRDetails;
       console.log("PR details fetched:", {
         source: prDetails.source?.branch?.name,
         destination: prDetails.destination?.branch?.name,
@@ -133,7 +146,15 @@ export const reviewCode = createAction({
         throw new Error(`Failed to fetch diff: ${diffResponse.statusText}`);
       }
 
-      const diffData = await diffResponse.json();
+      interface DiffData {
+        values: Array<{
+          new?: {
+            path?: string;
+          };
+        }>;
+      }
+
+      const diffData = (await diffResponse.json()) as DiffData;
 
       const reviews: FileReview[] = [];
 
@@ -412,11 +433,12 @@ async function getAIFeedback(
         return isValid;
       });
     } catch (error) {
-      console.error("Error parsing AI feedback:", {
-        error: error instanceof Error ? error.message : String(error),
-        rawArguments: functionCall.arguments,
-        sanitizedArguments: sanitizedJson,
-      });
+      if (error instanceof Error) {
+        console.error("Error parsing AI feedback:", {
+          error: error.message,
+          rawArguments: functionCall.arguments,
+        });
+      }
       return [];
     }
   } catch (error) {

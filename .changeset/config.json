@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["support-agent", "calculator-agent", "bitbucket-code-review-agent"]
+  "ignore": ["calculator-agent", "bitbucket-code-review-agent"]
 }

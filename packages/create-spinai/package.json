@@ -1,0 +1,32 @@
+{
+  "name": "create-spinai",
+  "version": "1.0.2",
+  "type": "module",
+  "description": "Alias package for create-spinai-app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Fallomai/spinai.git",
+    "directory": "packages/create-spinai"
+  },
+  "author": "FallomAI",
+  "license": "MIT",
+  "bin": {
+    "create-spinai": "./index.js"
+  },
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "build": "chmod +x index.js",
+    "clean": "echo 'Nothing to clean'"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "create-spinai-app": "^1.1.13"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}
