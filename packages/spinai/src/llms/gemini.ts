@@ -23,7 +23,22 @@ export function createGeminiLLM(config: GeminiConfig): LLM {
       const generativeModel = client.getGenerativeModel({ model });
 
       const data = await generativeModel.generateContent({
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        contents: [
+          {
+            role: "user",
+            parts: [
+              {
+                text: schema
+                  ? `Respond only with a JSON object matching this schema:\n${JSON.stringify(
+                      schema,
+                      null,
+                      2
+                    )}\n\n${prompt}`
+                  : prompt,
+              },
+            ],
+          },
+        ],
         generationConfig: {
           temperature: temperature ?? 0.7,
           maxOutputTokens: maxTokens,
@@ -39,28 +54,13 @@ export function createGeminiLLM(config: GeminiConfig): LLM {
 
       let content: T;
       if (schema) {
-        try {
-          const parsedOutput = JSON.parse(rawOutput);
-
-          if (
-            typeof parsedOutput !== "object" ||
-            !parsedOutput ||
-            !("response" in parsedOutput) ||
-            !("reasoning" in parsedOutput)
-          ) {
-            // Ignore Warning: 'throw' of exception caught locally
-            throw new Error("Parsed response does not match schema");
-          }
-
-          content = parsedOutput;
-        } catch {
-          content = {
-            response: rawOutput,
-            reasoning: "Fallback: AI returned invalid JSON.",
-            actions: [],
-          } as T;
-          rawOutput = JSON.stringify(content);
+        const parsedOutput = JSON.parse(rawOutput);
+        if (typeof parsedOutput !== "object" || !parsedOutput) {
+          // Ignore Warning: 'throw' of exception caught locally
+          throw new Error("Parsed response does not match schema");
         }
+        content = parsedOutput;
+
       } else {
         content = rawOutput as T;
       }
@@ -72,7 +72,7 @@ export function createGeminiLLM(config: GeminiConfig): LLM {
         costCents: calculateCost(
           data.response.usageMetadata?.promptTokenCount || 0,
           data.response.usageMetadata?.candidatesTokenCount || 0,
-          model,
+          model
         ),
         rawInput: prompt,
         rawOutput,
