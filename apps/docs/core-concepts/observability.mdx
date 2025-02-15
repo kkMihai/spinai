@@ -1,6 +1,6 @@
 ---
 title: "Observability & Logging"
-description: "Monitor and debug your AI agents with built-in observability features"
+description: "Monitor and debug your AI agents with built-in observability features, including the new token cost calculation for managing LLM usage."
 ---
 
 SpinAI provides built-in observability features to help you monitor and debug your AI agents. By enabling logging, you can track agent interactions, performance metrics, and costs in real-time through the SpinAI dashboard.
@@ -48,3 +48,28 @@ Visit [app.spinai.dev](https://app.spinai.dev) to view your agent logs and metri
 - Error tracking and debugging tools
 
 All interactions are grouped by agent ID, making it easy to monitor specific agents or use cases within your application.
+
+## Monitoring LLM Usage
+
+With the integration of new AI models and the introduction of token cost calculation, monitoring your Large Language Model (LLM) usage has become more granular and insightful. SpinAI's observability features now include detailed metrics on token consumption for each model interaction, allowing for precise tracking of your LLM usage and associated costs.
+
+## Token Cost Calculation
+
+The token cost calculation feature provides a clear understanding of how each interaction with the AI models contributes to your overall usage costs. This is particularly useful for managing budgets and optimizing the efficiency of your AI agents. The costs are calculated based on the number of tokens processed by the model, with different rates for input and output tokens.
+
+For example, the Cloudflare AI Models have been added with specific input and output token costs:
+
+```typescript
+const MODEL_COSTS = {
+  "@cf/meta/llama-2-7b-chat-int8": { input: 0.2, output: 0.4 },
+  "@cf/meta/llama-2-13b-chat-int8": { input: 0.4, output: 0.8 },
+  "@cf/meta/llama-2-70b-chat-int8": { input: 1.0, output: 2.0 },
+  "@cf/mistral/mistral-7b-instruct-v0.1": { input: 0.2, output: 0.4 },
+  "@cf/tiiuae/falcon-7b-instruct": { input: 0.2, output: 0.4 },
+  "@cf/anthropic/claude-instant-1.2": { input: 0.8, output: 2.4 },
+  "@cf/anthropic/claude-2.1": { input: 8.0, output: 24.0 },
+  "custom-http-model": { input: 0.5, output: 1.5 },
+};
+```
+
+This detailed breakdown enables you to make informed decisions about which models to use based on their cost-effectiveness and performance for your specific use cases. By understanding the token costs associated with each model, you can optimize your agent configurations for both cost and efficiency, ensuring that you get the most value out of your LLM usage.
