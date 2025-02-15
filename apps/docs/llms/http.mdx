@@ -1,0 +1,101 @@
+---
+title: "Integrating Generic HTTP LLM"
+description: "Learn how to integrate any HTTP-based LLM with SpinAI for custom language model support."
+---
+
+## Introduction
+
+Integrating a generic HTTP-based Large Language Model (LLM) allows you to leverage custom language models within the SpinAI framework. This flexibility enables you to use specialized models that are tailored to specific domains or requirements not covered by the pre-integrated options. This documentation outlines the steps to set up, configure, and use a generic HTTP LLM with SpinAI.
+
+## Setup
+
+To begin using a generic HTTP LLM, you must first create an instance of the LLM with your specific configuration. The `createHttpLLM` function facilitates this by accepting configuration parameters tailored to your HTTP endpoint.
+
+```typescript
+import { createHttpLLM } from "spinai";
+
+const llm = createHttpLLM({
+  endpoint: "https://your.custom.llm/api",
+  apiKey: "your_api_key", // Optional
+  headers: { "Custom-Header": "Value" }, // Optional
+  transformRequest: (body) => {/* Transform body if needed */},
+  transformResponse: (response) => response.customResponseField,
+});
+```
+
+## Configuration
+
+The `HttpLLMConfig` interface outlines the configuration options available for setting up your HTTP LLM.
+
+```typescript
+interface HttpLLMConfig {
+  endpoint: string;
+  apiKey?: string;
+  headers?: Record<string, string>;
+  transformRequest?: (body: unknown) => unknown;
+  transformResponse?: (response: unknown) => string;
+}
+```
+
+- `endpoint`: The URL of the HTTP endpoint for the LLM.
+- `apiKey`: An optional API key for authenticating requests.
+- `headers`: Optional additional headers to include in the request.
+- `transformRequest`: An optional function to transform the request body before sending.
+- `transformResponse`: An optional function to transform the response body received from the LLM.
+
+## Token Cost Calculation
+
+The SpinAI framework includes a utility to estimate the cost of requests based on token usage. Since custom HTTP LLMs might not provide token counts, the framework calculates an estimated cost based on the input and output character lengths.
+
+```typescript
+const estimatedInputTokens = Math.ceil(inputChars / 4);
+const estimatedOutputTokens = Math.ceil(outputChars / 4);
+const costCents = calculateCost(estimatedInputTokens, estimatedOutputTokens, "custom-http-model");
+```
+
+This estimation helps in managing and monitoring the usage costs associated with your custom LLM.
+
+## Examples
+
+### Basic Setup Example
+
+This example demonstrates how to set up and use a generic HTTP LLM for a simple completion task.
+
+```typescript
+import { createHttpLLM } from "spinai";
+
+const llm = createHttpLLM({
+  endpoint: "https://your.custom.llm/api",
+  apiKey: "your_api_key",
+});
+
+// Example usage
+async function getCompletion(prompt: string) {
+  const completion = await llm.complete({
+    prompt,
+    maxTokens: 512,
+  });
+
+  console.log(completion.content);
+}
+```
+
+### Token Cost Calculation Example
+
+This example shows how to calculate the estimated token cost for a request and response.
+
+```typescript
+import { calculateCost } from "spinai/utils/tokenCounter";
+
+const inputChars = 100; // Example input character count
+const outputChars = 250; // Example output character count
+
+const estimatedInputTokens = Math.ceil(inputChars / 4);
+const estimatedOutputTokens = Math.ceil(outputChars / 4);
+
+const costCents = calculateCost(estimatedInputTokens, estimatedOutputTokens, "custom-http-model");
+
+console.log(`Estimated cost: ${costCents} cents`);
+```
+
+By following these steps and examples, you can integrate any HTTP-based LLM with SpinAI, expanding the capabilities of your applications with custom language models.
