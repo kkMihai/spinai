@@ -1,0 +1,107 @@
+---
+title: "Integrating Cloudflare AI LLM"
+description: "Learn how to integrate Cloudflare AI LLM with SpinAI for advanced language model capabilities."
+---
+
+## Introduction
+
+Cloudflare AI LLM provides a powerful language model that can be integrated into your applications using SpinAI. This document will guide you through the setup, configuration, and usage of Cloudflare AI LLM to enhance your applications with advanced natural language processing capabilities.
+
+## Setup
+
+To use Cloudflare AI LLM with SpinAI, you need to have a Cloudflare account and obtain both an API token and an Account ID. These credentials will be used to authenticate your requests to the Cloudflare AI services.
+
+```typescript
+import { createCloudflareAILLM } from "spinai";
+
+const llm = createCloudflareAILLM({
+  apiToken: process.env.CLOUDFLARE_API_TOKEN,
+  accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
+  model: "@cf/meta/llama-2-7b-chat-int8", // Optional
+});
+```
+
+## Configuration
+
+The `createCloudflareAILLM` function accepts a configuration object with the following properties:
+
+```typescript
+interface CloudflareConfig {
+  apiToken: string; // Your Cloudflare API token
+  accountId: string; // Your Cloudflare Account ID
+  model?: string; // Optional. Defaults to "@cf/meta/llama-2-7b-chat-int8"
+}
+```
+
+- `apiToken`: Your Cloudflare API token.
+- `accountId`: Your Cloudflare Account ID.
+- `model`: The model you wish to use. If not specified, it defaults to "@cf/meta/llama-2-7b-chat-int8".
+
+## Token Cost Calculation
+
+Cloudflare AI LLM does not directly provide token counts. Instead, the cost is estimated based on the character count of the input and output. The SpinAI integration includes a utility to estimate this cost effectively.
+
+```typescript
+// Example of estimating token cost for a given input and output
+const input = "What is the weather like today?";
+const output = "The weather is sunny and warm.";
+
+const estimatedInputTokens = Math.ceil(input.length / 4);
+const estimatedOutputTokens = Math.ceil(output.length / 4);
+```
+
+This estimation helps in managing and predicting the usage costs associated with using Cloudflare AI LLM.
+
+## Examples
+
+### Basic Setup Example
+
+This example demonstrates how to set up and use the Cloudflare AI LLM for generating text completions.
+
+```typescript
+import { createCloudflareAILLM } from "spinai";
+
+const llm = createCloudflareAILLM({
+  apiToken: process.env.CLOUDFLARE_API_TOKEN,
+  accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
+});
+
+async function generateText(prompt: string) {
+  const completion = await llm.complete({
+    prompt: prompt,
+    maxTokens: 1024,
+  });
+
+  console.log(completion.content);
+}
+
+generateText("Write a short story about a robot learning to love.");
+```
+
+### Token Cost Calculation Example
+
+This example shows how to calculate the estimated token cost for a completion request and its response.
+
+```typescript
+import { createCloudflareAILLM, calculateCost } from "spinai";
+
+const llm = createCloudflareAILLM({
+  apiToken: process.env.CLOUDFLARE_API_TOKEN,
+  accountId: process.env.CLOUDFLARE_ACCOUNT_ID,
+});
+
+async function generateTextAndEstimateCost(prompt: string) {
+  const completion = await llm.complete({
+    prompt: prompt,
+    maxTokens: 1024,
+  });
+
+  console.log(`Estimated Input Tokens: ${completion.inputTokens}`);
+  console.log(`Estimated Output Tokens: ${completion.outputTokens}`);
+  console.log(`Estimated Cost (Cents): ${completion.costCents}`);
+}
+
+generateTextAndEstimateCost("Explain the theory of relativity.");
+```
+
+For further details and advanced configurations, refer to the Cloudflare AI documentation and the SpinAI API reference.
