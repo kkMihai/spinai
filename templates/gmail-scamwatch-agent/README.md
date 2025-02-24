@@ -50,6 +50,8 @@ Follow the steps in the video below.
 
 https://github.com/user-attachments/assets/a6a9344b-7372-49ec-9757-cf6b2bbd96b6
 
+⚠️ Copy the "Refresh token" Not the "Access token"
+
 
 ### 4. Run Sparky
 
