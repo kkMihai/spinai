@@ -47,7 +47,9 @@ SPINAI_API_KEY='your-spinai-api-
 ## How to get the Gmail Refresh Token
 Follow the steps in the video below.
 
-<iframe src="https://streamable.com/e/uf3oen" width="100%" height="100%" frameborder="0"></iframe>
+
+https://github.com/user-attachments/assets/a6a9344b-7372-49ec-9757-cf6b2bbd96b6
+
 
 ### 4. Run Sparky
 
